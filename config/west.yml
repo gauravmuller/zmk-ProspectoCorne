@@ -10,5 +10,9 @@ manifest:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
+    - name: prospector-zmk-module
+      url: https://github.com/carrefinho/prospector-zmk-module
+      revision: main
+      path: modules/prospector-zmk-module
   self:
     path: config
