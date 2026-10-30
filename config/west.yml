@@ -1,18 +1,19 @@
 manifest:
-  defaults:
-    revision: v0.3
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
-    # Additional modules containing boards/shields/custom code can be listed here as well
-    # See https://docs.zephyrproject.org/3.2.0/develop/west/manifest.html#projects
+    - name: janpfischer
+      url-base: https://github.com/janpfischer
   projects:
+    # ZMK main (Zephyr 4.1), pinned to a tested commit (2026-10-09).
+    # Update deliberately: change the hash here AND in .github/workflows/build.yml.
     - name: zmk
       remote: zmkfirmware
+      revision: 4dd95d7840eb3d5a3f59bb29fbf1ab054715ef85
       import: app/west.yml
-    - name: prospector-zmk-module
-      url: https://github.com/carrefinho/prospector-zmk-module
-      revision: main
-      path: modules/prospector-zmk-module
+    # YADS dongle screen, upgrade-4.1 branch, pinned to a tested commit (2026-03-12)
+    - name: zmk-dongle-screen
+      remote: janpfischer
+      revision: a8cec2626b8ea94e9a047eac1e53792980369c93
   self:
     path: config

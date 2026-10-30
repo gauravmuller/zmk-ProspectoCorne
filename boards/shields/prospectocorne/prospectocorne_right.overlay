@@ -1,0 +1,17 @@
+#include "prospectocorne.dtsi"
+
+// Right half columns sit 6 to the right of the left half in the matrix
+&default_transform {
+    col-offset = <6>;
+};
+
+&kscan0 {
+    col-gpios
+        = <&pro_micro 14 GPIO_ACTIVE_HIGH> // col5
+        , <&pro_micro 15 GPIO_ACTIVE_HIGH> // col4
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH> // col3
+        , <&pro_micro 19 GPIO_ACTIVE_HIGH> // col2
+        , <&pro_micro 20 GPIO_ACTIVE_HIGH> // col1
+        , <&pro_micro 21 GPIO_ACTIVE_HIGH> // col0
+        ;
+};

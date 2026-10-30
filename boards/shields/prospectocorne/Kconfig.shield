@@ -1,0 +1,8 @@
+config SHIELD_PROSPECTOCORNE_LEFT
+    def_bool $(shields_list_contains,prospectocorne_left)
+
+config SHIELD_PROSPECTOCORNE_RIGHT
+    def_bool $(shields_list_contains,prospectocorne_right)
+
+config SHIELD_PROSPECTOCORNE_DONGLE
+    def_bool $(shields_list_contains,prospectocorne_dongle)

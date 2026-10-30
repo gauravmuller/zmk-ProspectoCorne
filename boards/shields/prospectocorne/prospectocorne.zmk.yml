@@ -1,0 +1,15 @@
+file_format: "1"
+id: prospectocorne
+name: ProspectoCorne
+type: shield
+url: https://github.com/gauravmuller/zmk-ProspectoCorne
+requires: [pro_micro]
+exposes: [i2c_oled]
+features:
+  - keys
+  - display
+  - underglow
+  - studio
+siblings:
+  - prospectocorne_left
+  - prospectocorne_right

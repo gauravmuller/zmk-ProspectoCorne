@@ -1,0 +1,115 @@
+/*
+ * ProspectoCorne keymap -- Windows, creative apps + coding, first split keyboard.
+ *
+ * Layers: hold LWR = Lower, hold RSE = Raise, hold LWR + RSE together = Adjust.
+ * Layer names show on the dongle screen.
+ * Can be edited live (no reflash) with ZMK Studio: plug the dongle into USB,
+ * open https://zmk.studio in Chrome/Edge.
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
+
+#define BASE   0
+#define LOWER  1
+#define RAISE  2
+#define ADJUST 3
+
+/ {
+    // Hold Lower + Raise together -> Adjust
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        tri_layer {
+            if-layers = <LOWER RAISE>;
+            then-layer = <ADJUST>;
+        };
+    };
+
+    // Press Left Shift + Esc together -> Caps Word (capitals until the end of the word)
+    combos {
+        compatible = "zmk,combos";
+        combo_caps_word {
+            timeout-ms = <50>;
+            key-positions = <24 35>;
+            bindings = <&caps_word>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        base_layer {
+            display-name = "Base";
+// ┌─────┬───┬───┬───┬───┬───┐   ┌───┬───┬───┬───┬───┬─────┐
+// │ Tab │ Q │ W │ E │ R │ T │   │ Y │ U │ I │ O │ P │Bksp │
+// │Ctrl │ A │ S │ D │ F │ G │   │ H │ J │ K │ L │ ; │  '  │
+// │Shift│ Z │ X │ C │ V │ B │   │ N │ M │ , │ . │ / │ Esc │
+//               │Win│LWR│Spc│   │Ent│RSE│Alt│
+            bindings = <
+&kp TAB    &kp Q  &kp W  &kp E  &kp R  &kp T      &kp Y    &kp U  &kp I      &kp O    &kp P     &kp BSPC
+&kp LCTRL  &kp A  &kp S  &kp D  &kp F  &kp G      &kp H    &kp J  &kp K      &kp L    &kp SEMI  &kp SQT
+&kp LSHFT  &kp Z  &kp X  &kp C  &kp V  &kp B      &kp N    &kp M  &kp COMMA  &kp DOT  &kp FSLH  &kp ESC
+                  &kp LGUI  &mo LOWER  &kp SPACE  &kp RET  &mo RAISE  &kp LALT
+            >;
+        };
+
+        lower_layer {
+            display-name = "Lower";
+// ┌─────┬───┬───┬───┬───┬───┐   ┌────┬────┬────┬────┬───┬─────┐
+// │  `  │ 1 │ 2 │ 3 │ 4 │ 5 │   │ 6  │ 7  │ 8  │ 9  │ 0 │ Del │
+// │Ctrl │   │   │   │   │   │   │ ←  │ ↓  │ ↑  │ →  │   │     │
+// │Shift│   │   │   │   │   │   │Home│PgDn│PgUp│End │   │     │
+//               │Win│ ▓ │Spc│   │Ent │RSE │Alt │
+            bindings = <
+&kp GRAVE  &kp N1  &kp N2  &kp N3  &kp N4  &kp N5     &kp N6    &kp N7    &kp N8    &kp N9     &kp N0  &kp DEL
+&kp LCTRL  &none   &none   &none   &none   &none      &kp LEFT  &kp DOWN  &kp UP    &kp RIGHT  &none   &none
+&kp LSHFT  &none   &none   &none   &none   &none      &kp HOME  &kp PG_DN &kp PG_UP &kp END    &none   &none
+                           &trans  &trans  &trans     &trans    &trans    &trans
+            >;
+        };
+
+        raise_layer {
+            display-name = "Raise";
+// ┌─────┬───┬───┬───┬───┬───┐   ┌───┬───┬───┬───┬───┬─────┐
+// │ Tab │ ! │ @ │ # │ $ │ % │   │ ^ │ & │ * │ ( │ ) │Bksp │
+// │Ctrl │   │   │   │   │   │   │ - │ = │ [ │ ] │ \ │  `  │
+// │Shift│   │   │   │   │   │   │ _ │ + │ { │ } │ | │  ~  │
+//               │Win│LWR│Spc│   │Ent│ ▓ │Alt│
+            bindings = <
+&kp TAB    &kp EXCL  &kp AT  &kp HASH  &kp DLLR  &kp PRCNT    &kp CARET  &kp AMPS   &kp ASTRK  &kp LPAR  &kp RPAR  &kp BSPC
+&kp LCTRL  &none     &none   &none     &none     &none        &kp MINUS  &kp EQUAL  &kp LBKT   &kp RBKT  &kp BSLH  &kp GRAVE
+&kp LSHFT  &none     &none   &none     &none     &none        &kp UNDER  &kp PLUS   &kp LBRC   &kp RBRC  &kp PIPE  &kp TILDE
+                             &trans    &trans    &trans       &trans     &trans     &trans
+            >;
+        };
+
+        adjust_layer {
+            display-name = "Adjust";
+// ┌──────┬────┬────┬────┬────┬────┐   ┌──────┬────┬────┬──────┬────┬──────┐
+// │BT clr│ F1 │ F2 │ F3 │ F4 │ F5 │   │  F6  │ F7 │ F8 │  F9  │F10 │ F11  │
+// │      │BT1 │BT2 │BT3 │BT4 │BT5 │   │USB/BT│Scrn│Dim │Bright│    │ F12  │
+// │ Boot │RGB │RGB │RGB │RGB │RGB │   │ Mute │Vol-│Vol+│ Play │    │ Boot │
+// │      │on/f│eff │colr│ +  │ -  │   │      │    │    │Pause │    │      │
+//                  │    │ ▓  │    │   │      │ ▓  │    │
+// Scrn = F22 toggle dongle screen, Dim = F23, Bright = F24 (handled by the dongle screen)
+            bindings = <
+&bt BT_CLR   &kp F1          &kp F2          &kp F3          &kp F4          &kp F5             &kp F6       &kp F7      &kp F8        &kp F9     &kp F10  &kp F11
+&none        &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4       &out OUT_TOG &kp F22     &kp F23       &kp F24    &none    &kp F12
+&bootloader  &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_BRI &rgb_ug RGB_BRD    &kp C_MUTE   &kp C_VOL_DN &kp C_VOL_UP &kp C_PP  &none    &bootloader
+                                             &none           &trans          &none              &none        &trans      &none
+            >;
+        };
+
+        // Spare layers that ZMK Studio can turn into new layers later
+        extra_1 {
+            status = "reserved";
+        };
+
+        extra_2 {
+            status = "reserved";
+        };
+    };
+};

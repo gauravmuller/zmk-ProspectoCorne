@@ -1,0 +1,44 @@
+# ProspectoCorne is dongle-only:
+#   Prospector dongle (Xiao BLE) = central, talks to the computer
+#   Left + right halves          = peripherals, talk only to the dongle
+
+# ---------------- Prospector dongle (Xiao BLE) ----------------
+if SHIELD_PROSPECTOCORNE_DONGLE
+
+    # Name shown in the computer's Bluetooth list (max 16 characters)
+    config ZMK_KEYBOARD_NAME
+        default "ProspectoCorne"
+
+    config ZMK_SPLIT
+        default y
+
+    config ZMK_SPLIT_ROLE_CENTRAL
+        default y
+
+    # Two peripherals: left half and right half
+    config ZMK_SPLIT_BLE_CENTRAL_PERIPHERALS
+        default 2
+
+    # 2 halves + 5 Bluetooth profiles to computers
+    config BT_MAX_CONN
+        default 7
+
+    config BT_MAX_PAIRED
+        default 7
+
+    # Fetch each half's battery level and show it on the computer
+    config ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING
+        default y
+
+    config ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY
+        default y
+
+endif
+
+# ---------------- Both halves ----------------
+if SHIELD_PROSPECTOCORNE_LEFT || SHIELD_PROSPECTOCORNE_RIGHT
+
+    config ZMK_SPLIT
+        default y
+
+endif
